@@ -1,17 +1,18 @@
 <div class="jumbotron container-fluid text-center">
   <form><fieldset>
     <div class="row-fluid"><div class="span12">
-      <input type="text" class="email form-control input-lg" placeholder="recipient@address.co">
-      <input type="text" class="email form-control input-lg" placeholder="you@address.co">
-      <input type="text" class="email form-control input-lg" placeholder="subject">
+      <input ng-model="recipient" type="text" class="email form-control input-lg" placeholder="recipient@address.co">
+      <input ng-model="sender" type="text" class="email form-control input-lg" placeholder="you@address.co">
+      <input ng-model="subject" type="text" class="email form-control input-lg" placeholder="subject">
     </div></div>
     <div class="row-fluid"><div class="span12">
-      <textarea type="text" class="email form-control input-lg" placeholder="message:" rows="5"></textarea>
+      <textarea ng-model="message" ng-click="$scope.startRecording()" type="text" class="email form-control input-lg" placeholder="message:" rows="5"></textarea>
     </div></div>
     <div class="row-fluid">
       <div class="span2">
-        <a href="#/analysis"><button class="email btn btn-large btn-primary" type="submit">send</button></a>
+        <button ng-click="finishRecording()" class="email btn btn-large btn-primary" type="submit">send</button>
       </div>
     </div>
   </fieldset></form></div>
 </div>
+
