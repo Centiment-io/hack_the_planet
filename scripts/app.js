@@ -11,8 +11,8 @@ seedApp.config(function($routeProvider) {
     })
 
     // route for the about page
-    .when('/about', {
-            templateUrl : 'views/about.html',
-            controller  : 'aboutController'
+    .when('/analysis', {
+            templateUrl : 'views/analysis.html',
+            controller  : 'analysisController'
     })
 });
