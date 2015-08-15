@@ -3,8 +3,8 @@ seedApp.controller('mainController', function($scope) {
     // create a message to display in our view
     $scope.message = 'Starter page!';
 
-    $scope.concentration = processEEG("");
-    $scope.mellow;
+    $scope.concentration;
+    $scope.mellowness;
 
     /** Parses a CSV file of EEG readings and computes the average reading */
     function processEEG(csv) {
@@ -13,11 +13,19 @@ seedApp.controller('mainController', function($scope) {
     	var readingsList = csv.split("\n");
     	for (var i = 0; i < readingsList.length; i++) {
     		var line = readingsList[i].split(","); 
-    		var reading = line[3];
+    		var reading = line[2];
 
     		readingTotal += reading;
     	}
 
     	return readingTotal / readingsList.length();
-    }    
+    }   
+
+    function getConcentrationReading() {
+    	return $scope.concentration;
+    } 
+
+    function getMellowReading() {
+    	return $scope.mellow;
+    }
 });
