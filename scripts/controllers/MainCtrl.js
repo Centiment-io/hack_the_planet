@@ -26,8 +26,7 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 
     	var txt = $scope.asyncReadFile("README.md").then(
     		function(asyncText) {
-		    	console.log(txt);
-
+		    	console.log(asyncText);
     		});
 
     	// process data
@@ -62,12 +61,7 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
     $scope.asyncReadFile = function(file) {
     	var result = $q.defer();
 	    var rawFile = new XMLHttpRequest();
-	    rawFile.open("GET", file, false).then(
-	    	function(text) {
-	    		console.log(text);
-	    		result.resolve(text);
-	    	});
-	    /*
+	    rawFile.open("GET", file, true);
 	    rawFile.onreadystatechange = function ()
 	    {
 	        if(rawFile.readyState === 4)
@@ -75,12 +69,12 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 	            if(rawFile.status === 200 || rawFile.status == 0)
 	            {
 	                var allText = rawFile.responseText;
+	                console.log(allText);
 	                result.resolve(allText);
 	            }
 	        }
 	    }
-	    */
-	    //rawFile.send(null);
+	    rawFile.send(null);
 	    return result.promise;
 	}
 });
