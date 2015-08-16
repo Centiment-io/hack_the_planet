@@ -4,22 +4,33 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 	$scope.sender = "bar@bar";
 	$scope.subject = "baz";
 	$scope.message = "alkdjfal;ksdfjas";
-    var csv_concentration = "concentration.csv";
-    var csv_mellowness = "mellowness.csv";
+    var csv_concentration = "../../output_data/output_concentration_1.csv";
+    var csv_mellowness = "../../output_data/output_mellowness_1.csv";
 
     $scope.startRecording = function() {
     	// open file TODO
 	    //open($scope.csv_concentration);
 	    //open($scope.csv_mellowness);
+        console.log("start");
+        // Instantiate the Shell object and invoke its execute method.
+        var oShell = new ActiveXObject("Shell.Application");
 
-    	// begin collecting brain-wave data
+        var commandtoRun = "C:\\Winnt\\Notepad.exe";
+        if (inputparms != "") {
+          var commandParms = document.Form1.filename.value;
+        }
+
+        // Invoke the execute method.  
+        oShell.ShellExecute(commandtoRun, commandParms, "", "open", "1");
+
+        	// begin collecting brain-wave data
     }
 
     $scope.finishRecording = function() {
     	// finish collecting brain-wave data
 
     	// save files & process data
-    	$scope.asyncReadFile("../../output_data/output_concentration_1.csv").then(
+    	$scope.asyncReadFile(csv_concentration).then(
     		function(asyncText) {
 		    	var concentration = $scope.processEEG(asyncText);
                 emailService.setConcentration(concentration);
@@ -28,7 +39,7 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
     	);
 
         /* TODO MELLOW
-    	$scope.asyncReadFile("../../output_data/output_mellowness_1.csv").then(
+    	$scope.asyncReadFile(csv_mellowness).then(
     		function(asyncText) {
     			var mellowness = $scope.processEEG($scope.csv_mellowness);
                 emailService.setMellowness(mellowness);
