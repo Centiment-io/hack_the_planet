@@ -24,14 +24,16 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 
     	// save files & process data
 
-    	$scope.asyncReadFile("README.md").then(
+    	$scope.asyncReadFile("../../output_data/output_concentration_1.csv").then(
     		function(asyncText) {
-		    	console.log(asyncText);
-		    	//$scope.concentration = $scope.processEEG($scope.csv_concentration);
+		    	//console.log(asyncText);
+		    	$scope.concentration = $scope.processEEG(asyncText);
+                console.log($scope.concentration);
 	    		//close($scope.csv_concentration);
     		}
     	);
 
+        /* TODO MELLOW
     	$scope.asyncReadFile("README.md").then(
     		function(asyncText) {
 		    	console.log(asyncText);
@@ -39,6 +41,7 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 	    		//close($scope.csv_mellowness);
     		}
     	);
+        */
 
     	// save email
     	emailService.setEmail(0, 0, $scope.recipient, $scope.sender, $scope.subject, $scope.message);
@@ -52,11 +55,12 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
     	var readingsList = csv.split("\n");
     	for (var i = 0; i < readingsList.length; i++) {
     		var line = readingsList[i].split(","); 
-    		var reading = line[2];
-
-    		readingTotal += reading;
+            if (line[2] != null) {
+                var reading = parseInt(line[2].trim());
+                readingTotal += reading;
+            }
     	}
-    	return readingTotal / readingsList.length();
+    	return readingTotal / readingsList.length;
     }
 
     $scope.asyncReadFile = function(file) {
