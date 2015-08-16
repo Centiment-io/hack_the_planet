@@ -8,65 +8,68 @@
  *    5. musem (Muse mellowness)
  */
 
-var mongodb = require('mongodb');
-var mongoose = require('mongoose');
+exports.start = function(callback){
 
-http = require('http');
-fs = require('fs');
+    var mongodb = require('mongodb');
+    var mongoose = require('mongoose');
 
-// Connection URL. This is where your mongodb server is running.
-var url = 'mongodb://52.6.238.55:27017/CONNECTIONS';
-mongoose.connect(url);
+    http = require('http');
+    fs = require('fs');
 
-var Schema = mongoose.Schema;
-    
-var emailSchema = new Schema({
-    from: String,
-    to: String,
-    body: String,
-    musec: Number,
-    musem: Number
-}, {collection: 'email'});	    
+    // Connection URL. This is where your mongodb server is running.
+    var url = 'mongodb://52.6.238.55:27017/CONNECTIONS';
+    mongoose.connect(url);
+
+    var Schema = mongoose.Schema;
+
+    var emailSchema = new Schema({
+        from: String,
+        to: String,
+        body: String,
+        musec: Number,
+        musem: Number
+    }, {collection: 'email'});
 
 
-var Email = mongoose.model('Email', emailSchema);
+    var Email = mongoose.model('Email', emailSchema);
 
-server = http.createServer( function(req, res) {
+    server = http.createServer( function(req, res) {
 
-    console.dir(req.param);
-        console.log("POST");
-        var body = '';
-        req.on('data', function (data) {
-	    body += data;
-            console.log("Partial body: " + body);
-        });
-        req.on('end', function () {
-	    var params = getUrlVars(body);
-	    console.log(params);
-
-	    var email = new Email({
-                from : params.from,
-                to : params.to,
-                body : params.body,
-                musec : params.musec,
-		musem : params.musem
+        console.dir(req.param);
+            console.log("POST");
+            var body = '';
+            req.on('data', function (data) {
+    	    body += data;
+                console.log("Partial body: " + body);
             });
+            req.on('end', function () {
+    	    var params = getUrlVars(body);
+    	    console.log(params);
 
-            email.save(function (err, data) {
-                if (err) console.log(err);
-                else console.log('Saved : ', data );
-            });
+    	    var email = new Email({
+                    from : params.from,
+                    to : params.to,
+                    body : params.body,
+                    musec : params.musec,
+    		musem : params.musem
+                });
 
-	    console.log("data saved to db");
-	});
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end('post received');
-});
+                email.save(function (err, data) {
+                    if (err) console.log(err);
+                    else console.log('Saved : ', data );
+                });
 
-port = 8000;
-host = '127.0.0.1';
-server.listen(port, host);
-console.log('Listening at http://' + host + ':' + port);
+    	    console.log("data saved to db");
+    	});
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end('post received');
+    });
+
+    port = 8000;
+    host = '127.0.0.1';
+    server.listen(port, host);
+    console.log('Listening at http://' + host + ':' + port);
+}
 
 // Handle URL to JSON
 function getUrlVars(url) {
@@ -79,3 +82,4 @@ function getUrlVars(url) {
     }
     return myJson;
 }
+
