@@ -29,7 +29,7 @@ exports.start = function(baton,callback){
     //console.log(tofile1);
     //console.log(tofile2);
     var text='{"nodes":['+tofile1+'],\n"links":['+tofile2+']}'
-    fs.writeFile("./test.txt", text, function(err) {
+    fs.writeFile("../d3/data.json", text, function(err) {
         if(err) {
             return console.log(err);
         }

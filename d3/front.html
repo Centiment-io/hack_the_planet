@@ -1,0 +1,141 @@
+<html>
+<head>
+<style>
+
+ @font-face { font-family: Delicious; src: url('alienleague.ttf'); } 
+
+a{
+text-decoration: none;
+color: white;
+}
+
+a:hover{
+text-decoration: none;
+color: white;
+}
+
+#try {
+	-moz-box-shadow:inset 0px 1px 3px 0px #91b8b3;
+	-webkit-box-shadow:inset 0px 1px 3px 0px #91b8b3;
+	box-shadow:inset 0px 1px 3px 0px #91b8b3;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #6c7c7c));
+	background:-moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:-webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:-o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:-ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#6c7c7c',GradientType=0);
+	background-color:#768d87;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border:1px solid #566963;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:11px 23px;
+	text-decoration:none;
+	text-shadow:0px -1px 0px #0372ad;
+}
+#try:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c), color-stop(1, #768d87));
+	background:-moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:-webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:-o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:-ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c', endColorstr='#768d87',GradientType=0);
+	background-color:#6c7c7c;
+}
+#try:active {
+	position:relative;
+	top:1px;
+}
+
+
+body{
+  margin: 0px;
+}
+
+html{
+  overflow: hidden;
+}
+
+#try{
+    float: right;
+    margin-right: 51px;
+    font-size: 39px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: Delicious;
+}
+
+#tag{
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    position: relative;
+    z-index: 10;
+    font-size: 45px;
+    font-family: Delicious;
+}
+
+#topbar{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    z-index: 10000;
+    width: 100%;
+    font-family: Delicious;
+    padding-left: 20px;
+    font-size: 60px;
+}
+
+#body{
+height: 100%;
+background: url('/bg.png');
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300%;
+  -webkit-animation: slideshow 60s linear infinite;
+  -moz-animation:    slideshow 60s linear infinite;
+}
+
+@-webkit-keyframes slideshow {
+  0%    { left: 0; }
+  100%  { left: -200%; }
+}
+@moz-keyframes slideshow {
+  0%    { left: 0; }
+  100%  { left: -200%; }
+}
+
+
+</style>
+</head>
+<div id="topbar">
+<div id="try">
+<a href="/test.html">Analyze</a>
+</div>
+<div id="title">
+Nova
+</div>
+
+</div>
+<div id="tag">
+Rediscover yourself
+</div>
+<div id="body">
+
+</div>
+
+
+</html>
