@@ -1,5 +1,5 @@
 // create the controller and inject Angular's $scope
-seedApp.controller('mainController', function($scope, $location, $q, emailService) {
+seedApp.controller('mainController', function($scope, $location, $q, $http, emailService) {
 	$scope.recipient = "foo@foo";
 	$scope.sender = "bar@bar";
 	$scope.subject = "baz";
