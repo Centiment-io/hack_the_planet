@@ -13,17 +13,19 @@ seedApp.controller('mainController', function($scope, $location, $q, $http, emai
 	    //open($scope.csv_mellowness);
         console.log("start");
         // Instantiate the Shell object and invoke its execute method.
-        var oShell = new ActiveXObject("Shell.Application");
 
-        var commandtoRun = "C:\\Winnt\\Notepad.exe";
-        if (inputparms != "") {
-          var commandParms = document.Form1.filename.value;
-        }
-
-        // Invoke the execute method.  
-        oShell.ShellExecute(commandtoRun, commandParms, "", "open", "1");
-
-        	// begin collecting brain-wave data
+        $http({
+	        url: 'http://localhost:8080/eeg_start/',
+	        method: "GET",
+	        withCredentials: true,
+	        headers: {
+	                    'Content-Type': 'application/json; charset=utf-8'
+	        }
+   		 }).then(function(response) {
+        	console.log("cllback");
+        }, function(err) {
+        	console.log("err");
+        });
     }
 
     $scope.finishRecording = function() {

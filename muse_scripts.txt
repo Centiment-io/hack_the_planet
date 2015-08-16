@@ -1,0 +1,3 @@
+muse-io --osc osc.udp://localhost:5000,osc.udp://localhost:5001
+muse-player -i /muse/elements/experimental/concentration -l udp:5000 -C output_concentration_1.csv -s osc.udp://localhost:5001
+muse-player -i /muse/elements/experimental/mellow -l udp:5000 -C output_mellowness_1.csv -s osc.udp://localhost:5002
