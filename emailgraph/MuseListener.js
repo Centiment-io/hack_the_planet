@@ -51,7 +51,7 @@ exports.start = function(callback){
                     to : params.to,
                     body : params.body,
                     musec : params.musec,
-    		musem : params.musem
+    	  	    musem : params.musem
                 });
 
                 email.save(function (err, data) {
@@ -65,8 +65,8 @@ exports.start = function(callback){
             res.end('post received');
     });
 
-    port = 8000;
-    host = '127.0.0.1';
+    port = 9000;
+    host = '0.0.0.0';
     server.listen(port, host);
     console.log('Listening at http://' + host + ':' + port);
 }
