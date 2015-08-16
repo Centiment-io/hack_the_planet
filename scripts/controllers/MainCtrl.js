@@ -13,8 +13,8 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 
     $scope.startRecording = function() {
     	// open file TODO
-	    open($scope.csv_concentration);
-	    open($scope.csv_mellowness);
+	    //open($scope.csv_concentration);
+	    //open($scope.csv_mellowness);
 
     	// begin collecting brain-wave data
     }
@@ -22,22 +22,23 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
     $scope.finishRecording = function() {
     	// finish collecting brain-wave data
 
-    	// save file
+    	// save files & process data
 
-    	var txt = $scope.asyncReadFile("README.md").then(
+    	$scope.asyncReadFile("README.md").then(
     		function(asyncText) {
 		    	console.log(asyncText);
-    		});
+		    	//$scope.concentration = $scope.processEEG($scope.csv_concentration);
+	    		//close($scope.csv_concentration);
+    		}
+    	);
 
-    	// process data
-    	/*
-    	$scope.concentration = $scope.processEEG($scope.csv_concentration);
-    	$scope.mellowness = $scope.processEEG($scope.csv_mellowness);
-
-    	// clean files
-	    close($scope.csv_concentration);
-	    close($scope.csv_mellowness);
-	    */
+    	$scope.asyncReadFile("README.md").then(
+    		function(asyncText) {
+		    	console.log(asyncText);
+    			//$scope.mellowness = $scope.processEEG($scope.csv_mellowness);
+	    		//close($scope.csv_mellowness);
+    		}
+    	);
 
     	// save email
     	emailService.setEmail(0, 0, $scope.recipient, $scope.sender, $scope.subject, $scope.message);
@@ -69,7 +70,6 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 	            if(rawFile.status === 200 || rawFile.status == 0)
 	            {
 	                var allText = rawFile.responseText;
-	                console.log(allText);
 	                result.resolve(allText);
 	            }
 	        }
