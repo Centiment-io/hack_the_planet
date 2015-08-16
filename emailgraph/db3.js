@@ -3,13 +3,13 @@ var fs = require('fs');
 exports.start = function(baton,callback){
     //do code
     var mongoose=baton[0];
-    var edges=baton[3];
-    var users=baton[2];
-    var nodesize=baton[4];
+    var edges=baton[4];
+    var users=baton[3];
+    var nodesize=baton[5];
     console.log("third part");
-    //console.log(edges);
-    //console.log(users);
-    //console.log(nodesize);
+    console.log(edges);
+    console.log(users);
+    console.log(nodesize);
     var Schema = mongoose.Schema;
     var tofile2='';
     var tofile1='';
