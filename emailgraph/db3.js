@@ -1,18 +1,22 @@
 var mongodb = require('mongodb');
-var mongoose = require('mongoose');
 var fs = require('fs');
-exports.start = function(users,edges,mongoose){
+exports.start = function(baton,callback){
     //do code
-    var n;
+    var mongoose=baton[0];
+    var edges=baton[3];
+    var users=baton[2];
+    var nodesize=baton[4];
     console.log("third part");
     //console.log(edges);
+    //console.log(users);
+    //console.log(nodesize);
     var Schema = mongoose.Schema;
     var tofile2='';
     var tofile1='';
     users.sort(function(a,b){return a.num-b.num;});
     users.forEach(function(user){
         //console.log(user);
-        var a='{"id":"'+user.num+'","name":"'+user.fullname+'","image":"'+user.pic+'","value":"25","email":"'+user.email+'"},\n'
+        var a='{"id":"'+user.num+'","name":"'+user.fullname+'","image":"'+user.pic+'","value":"'+nodesize[user.num]+'","email":"'+user.email+'"},\n'
         tofile1=tofile1.concat(a);
     });
     tofile1=tofile1.slice(0,-2);
