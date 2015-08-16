@@ -4,12 +4,8 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
 	$scope.sender = "bar@bar";
 	$scope.subject = "baz";
 	$scope.message = "alkdjfal;ksdfjas";
-    $scope.concentration = 0;
-    $scope.mellowness = 0;
-    $scope.csv_concentration = "concentration.csv";
-    $scope.csv_mellowness = "mellowness.csv";
-
-    // create a message to display in our view
+    var csv_concentration = "concentration.csv";
+    var csv_mellowness = "mellowness.csv";
 
     $scope.startRecording = function() {
     	// open file TODO
@@ -23,33 +19,31 @@ seedApp.controller('mainController', function($scope, $location, $q, emailServic
     	// finish collecting brain-wave data
 
     	// save files & process data
-
     	$scope.asyncReadFile("../../output_data/output_concentration_1.csv").then(
     		function(asyncText) {
-		    	//console.log(asyncText);
-		    	$scope.concentration = $scope.processEEG(asyncText);
-                console.log($scope.concentration);
+		    	var concentration = $scope.processEEG(asyncText);
+                emailService.setConcentration(concentration);
 	    		//close($scope.csv_concentration);
     		}
     	);
 
         /* TODO MELLOW
-    	$scope.asyncReadFile("README.md").then(
+    	$scope.asyncReadFile("../../output_data/output_mellowness_1.csv").then(
     		function(asyncText) {
-		    	console.log(asyncText);
-    			//$scope.mellowness = $scope.processEEG($scope.csv_mellowness);
+    			var mellowness = $scope.processEEG($scope.csv_mellowness);
+                emailService.setMellowness(mellowness);
 	    		//close($scope.csv_mellowness);
     		}
     	);
         */
 
     	// save email
-    	emailService.setEmail(0, 0, $scope.recipient, $scope.sender, $scope.subject, $scope.message);
+    	emailService.setEmail($scope.recipient, $scope.sender, $scope.subject, $scope.message);
     	// change view
     	$location.path("analysis");
     }
 
-    /** Parses a CSV file of EEG readings and computes the average reading */
+    // Parses a CSV file of EEG readings and computes the average reading
     $scope.processEEG = function(csv) {
     	var readingTotal = 0;
     	var readingsList = csv.split("\n");
