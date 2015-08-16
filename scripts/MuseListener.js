@@ -1,98 +1,81 @@
-//lets require/import the mongodb native drivers.
+/**
+ * MuseListener.js - Waits for data from client-side via POST request and stores into database. This file should be run separately.
+ * POST Request: 
+ *    1. from (Email sent from)
+ *    2. to (Email sent to)
+ *    3. body (Email content)
+ *    4. musec (Muse calmness)
+ *    5. musem (Muse mellowness)
+ */
+
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 
-var async = require('async');
-
-//Load the request module
-var request = require('request');
-
-//We need to work with "MongoClient" interface in order to connect to a mongodb server.
-var MongoClient = mongodb.MongoClient;
+http = require('http');
+fs = require('fs');
 
 // Connection URL. This is where your mongodb server is running.
 var url = 'mongodb://52.6.238.55:27017/CONNECTIONS';
-
-// Azure Account Key
-AZURE_KEY = 'QWNjb3VudEtleTo1WitlNTFQYnV0bUxYMFphN25VcmpWalF0N3ljdzNMTTROVXFnenM4MTh3PQ==';
-
 mongoose.connect(url);
-console.log('Connection established.');
 
 var Schema = mongoose.Schema;
-
+    
 var emailSchema = new Schema({
     from: String,
     to: String,
     body: String,
     musec: Number,
     musem: Number
-}, {collection: 'email'});
+}, {collection: 'email'});	    
 
-var emailDetailedSchema = new Schema ({
-    from: String,
-    to: String,
-    body: String,
-    musec: Number,
-    musem: Number,
-    sentiment: Number
-}, {collection: 'email_detailed'});
 
 var Email = mongoose.model('Email', emailSchema);
-var EmailDetailed = mongoose.model('EmailDetailed', emailDetailedSchema);
 
-// Clear new database
-EmailDetailed.find().remove().exec();
-console.log('email_detailed cleared');
+server = http.createServer( function(req, res) {
 
-Email.find({}, function(err, emails) {
+    console.dir(req.param);
+        console.log("POST");
+        var body = '';
+        req.on('data', function (data) {
+	    body += data;
+            console.log("Partial body: " + body);
+        });
+        req.on('end', function () {
+	    var params = getUrlVars(body);
+	    console.log(params);
 
-// Go through each email, run through Azure's machine learning, and store into email_detailed table in database
-async.eachSeries(emails, function(email, callback){
+	    var email = new Email({
+                from : params.from,
+                to : params.to,
+                body : params.body,
+                musec : params.musec,
+		musem : params.musem
+            });
 
-	// Azure's machine learning
-        request({
-        url: 'https://api.datamarket.azure.com/data.ashx/amla/text-analytics/v1/GetSentiment', //URL to hit
-        qs: {Text: email.body}, //Query string data
-        method: 'GET',
-        headers: {
-            'Authorization': 'Basic '+AZURE_KEY,
-            'Accept': 'application/json'
-        }
-    }, function(error, response, body){
-          if(error) {
-              console.log(error);
-          } else {
+            email.save(function (err, data) {
+                if (err) console.log(err);
+                else console.log('Saved : ', data );
+            });
 
-	    // Store sentiment value
-              console.log(JSON.parse(String(body)).Score);
-
-	    var email_sentiment = JSON.parse(body).Score;
-
-            console.log(JSON.parse(body).Score);
-	    var email_detailed = new EmailDetailed({
-		from : email.from,
-		to : email.to,
-		body : email.body,
-		musec : email.musec,
-		musem : email.musem,
-		sentiment: email_sentiment
-	    });
-
-	    email_detailed.save(function (err, data) {
-	        if (err) console.log(err);
-	        else console.log('Saved : ', data );
-	    });
-
-	    email.remove();
-
-              callback();
-        }
-       });
-    
-    });
-    
+	    console.log("data saved to db");
+	});
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end('post received');
 });
 
+port = 8000;
+host = '127.0.0.1';
+server.listen(port, host);
+console.log('Listening at http://' + host + ':' + port);
 
-module.exports.Email;
+// Handle URL to JSON
+function getUrlVars(url) {
+    var hash;
+    var myJson = {};
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        myJson[hash[0]] = hash[1];
+    }
+    return myJson;
+}
