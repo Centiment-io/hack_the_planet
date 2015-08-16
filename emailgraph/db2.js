@@ -1,19 +1,25 @@
 var mongodb = require('mongodb');
-exports.start = function(ranks,mongoose){
+exports.start = function(baton,callback){
+    var mongoose=baton[0];
     //do code
     //to do list: add concentration, change radius, change length
-    var n;
+    
+    console.log("second part");
+    var ranks=baton[1];
     var Schema = mongoose.Schema;
     var userSchema = new Schema ({num: Number, fullname: String, email: String,pic:String},{collection: 'userdata'});
     var User = mongoose.model('Userdata', userSchema);
     var edges=[];
     //console.log(ranks);
-    console.log("second part");
     User.find({}, function(err, users) {
         if (err){
             console.log(err);
         }   
-        n=users.length;
+        var n=users.length;
+        var nodesize=[];
+        for (i=0;i<n;i++){
+            nodesize.push(0);
+        }
         //console.log(n);
         for (i=0;i<n;i++){
             for (j=0;j<i;j++){
@@ -23,12 +29,17 @@ exports.start = function(ranks,mongoose){
                     var average=2.0/(1.0/u.score+1.0/v.score);
                     if (average>0.2){
                         edges.push([users[i].num,users[j].num,10.0+4.0/(average+0.01)]);
+                        nodesize[i]+=1;
+                        nodesize[j]+=1;
                     }
                 }
             }
         }
+        baton.push(users);
+        baton.push(edges);
+        baton.push(nodesize);
         var thirdpart = require('./db3');
-        thirdpart.start(users,edges,mongoose);
+        thirdpart.start(baton,callback);
     
     });
 }
