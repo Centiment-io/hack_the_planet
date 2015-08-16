@@ -5,12 +5,12 @@ exports.start = function(baton,callback){
     //to do list: add concentration, change radius, change length
     
     console.log("second part");
-    var ranks=baton[1];
+    var ranks=baton[2];
     var Schema = mongoose.Schema;
     var userSchema = new Schema ({num: Number, fullname: String, email: String,pic:String},{collection: 'userdata'});
     var User = mongoose.model('Userdata', userSchema);
     var edges=[];
-    //console.log(ranks);
+    console.log(ranks);
     User.find({}, function(err, users) {
         if (err){
             console.log(err);
@@ -29,8 +29,8 @@ exports.start = function(baton,callback){
                     var average=2.0/(1.0/u.score+1.0/v.score);
                     if (average>0.2){
                         edges.push([users[i].num,users[j].num,10.0+4.0/(average+0.01)]);
-                        nodesize[i]+=1;
-                        nodesize[j]+=1;
+                        nodesize[users[i].num]+=1;
+                        nodesize[users[j].num]+=1;
                     }
                 }
             }

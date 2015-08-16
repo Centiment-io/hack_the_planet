@@ -51,7 +51,7 @@ exports.start = function(callback) {
         var azure_email_sentiment;
 
         // First run each email through Azure's machine learning, then Prediction.io.
-        async.eachSeries(emails, function (email, callback) {
+        async.eachSeries(emails, function (email, callback2) {
 
             // Azure's machine learning
             request({
@@ -102,18 +102,21 @@ exports.start = function(callback) {
                             });
 
                             email.remove();
-                            callback();
+                            callback2();
                         }
                     });
 
                 }
             });
 
-        });
+        },function(){
+		
+		callback();
+	});
 
     });
 
-
-    module.exports.Email;
+    module.exports.mongoose=mongoose;
+    module.exports.emaildetailed=EmailDetailed;
 
 }

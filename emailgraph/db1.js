@@ -14,8 +14,7 @@ exports.start = function(baton,callback){
     }, {collection: 'email_detailed'});
 
 
-    var EmailDetailed = mongoose.model('EmailDetailed', emailDetailedSchema);
-
+    EmailDetailed=baton[1];
     var ranks=new Array();
     EmailDetailed.find({}, function(err, emails) {
         if (err){
