@@ -11,9 +11,7 @@ var seedApp = angular.module('seedApp', ['ngRoute'])
     };
 
     return {
-        setEmail: function(concentration, mellowness, recipient, sender, subject, message) {
-            email.concentration = concentration;
-            email.mellowness = mellowness;
+        setEmail: function(recipient, sender, subject, message) {
             email.recipient = recipient;
             email.sender = sender;
             email.subject = subject;
@@ -22,6 +20,12 @@ var seedApp = angular.module('seedApp', ['ngRoute'])
         },
         getEmail: function() {
             return email;
+        },
+        setConcentration: function(concentration) {
+            email.concentration = concentration;
+        },
+        setMellowness: function(mellowness) {
+            email.mellowness = mellowness;
         }
     };
 });
