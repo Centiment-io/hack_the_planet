@@ -1,31 +1,28 @@
 var seedApp = angular.module('seedApp', ['ngRoute'])
 .service('emailService', function() {
     var email = {
-        concentration: 0,
-        mellowness: 0,
-        recipient: '',
-        sender: '',
-        subject: '',
-        message: '',
-        timestamp: ''
+        musec: 0,
+        musem: 0,
+        to: '',
+        from: '',
+        body: '',
     };
 
     return {
-        setEmail: function(recipient, sender, subject, message) {
-            email.recipient = recipient;
-            email.sender = sender;
-            email.subject = subject;
-            email.message = message;
-            email.timestamp = Date.now();
+        setEmail: function(to, from, body) {
+            email.to = to;
+            email.from = from;
+            email.body = body;
         },
+
         getEmail: function() {
             return email;
         },
-        setConcentration: function(concentration) {
-            email.concentration = concentration;
+        setMusec: function(musec) {
+            email.musec = musec;
         },
-        setMellowness: function(mellowness) {
-            email.mellowness = mellowness;
+        setMusem: function(musem) {
+            email.musem = musem;
         }
     };
 });
