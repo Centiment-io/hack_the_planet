@@ -1,9 +1,9 @@
 // create the controller and inject Angular's $scope
 seedApp.controller('mainController', function($scope, $location, $q, $http, emailService) {
-	$scope.recipient = "foo@foo";
-	$scope.sender = "bar@bar";
-	$scope.subject = "baz";
-	$scope.message = "alkdjfal;ksdfjas";
+	$scope.recipient;
+	$scope.sender;
+	$scope.subject;
+	$scope.message;
     var csv_concentration = "../../output_data/output_concentration_1.csv";
     var csv_mellowness = "../../output_data/output_mellowness_1.csv";
 
@@ -13,43 +13,46 @@ seedApp.controller('mainController', function($scope, $location, $q, $http, emai
 	    //open($scope.csv_mellowness);
         console.log("start");
         // Instantiate the Shell object and invoke its execute method.
-        var oShell = new ActiveXObject("Shell.Application");
 
-        var commandtoRun = "C:\\Winnt\\Notepad.exe";
-        if (inputparms != "") {
-          var commandParms = document.Form1.filename.value;
-        }
-
-        // Invoke the execute method.  
-        oShell.ShellExecute(commandtoRun, commandParms, "", "open", "1");
-
-        	// begin collecting brain-wave data
+        $http({
+	        url: 'http://localhost:8080/eeg_start/',
+	        method: "GET",
+	        withCredentials: true,
+	        headers: {
+	                    'Content-Type': 'application/json; charset=utf-8'
+	        }
+   		 }).then(function(response) {
+        	console.log("cllback");
+        }, function(err) {
+        	console.log("err");
+        });
     }
 
     $scope.finishRecording = function() {
     	// finish collecting brain-wave data
+        var concentration;
+        var mellowness;
 
     	// save files & process data
     	$scope.asyncReadFile(csv_concentration).then(
     		function(asyncText) {
-		    	var concentration = $scope.processEEG(asyncText);
-                emailService.setConcentration(concentration);
+		    	concentration = $scope.processEEG(asyncText);
+                emailService.setMusec(concentration);
 	    		//close($scope.csv_concentration);
     		}
     	);
 
-        /* TODO MELLOW
     	$scope.asyncReadFile(csv_mellowness).then(
     		function(asyncText) {
-    			var mellowness = $scope.processEEG($scope.csv_mellowness);
-                emailService.setMellowness(mellowness);
+    			mellowness = $scope.processEEG(asyncText);
+    			console.log(mellowness);
+                emailService.setMusem(mellowness);
 	    		//close($scope.csv_mellowness);
     		}
     	);
-        */
 
     	// save email
-    	emailService.setEmail($scope.recipient, $scope.sender, $scope.subject, $scope.message);
+    	emailService.setEmail($scope.recipient, $scope.sender, $scope.message);
     	// change view
     	$location.path("analysis");
     }
@@ -61,7 +64,7 @@ seedApp.controller('mainController', function($scope, $location, $q, $http, emai
     	for (var i = 0; i < readingsList.length; i++) {
     		var line = readingsList[i].split(","); 
             if (line[2] != null) {
-                var reading = parseInt(line[2].trim());
+                var reading = parseFloat(line[2].trim());
                 readingTotal += reading;
             }
     	}
