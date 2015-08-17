@@ -7,9 +7,9 @@ exports.start = function(baton,callback){
     var users=baton[3];
     var nodesize=baton[5];
     console.log("third part");
-    console.log(edges);
-    console.log(users);
-    console.log(nodesize);
+    //console.log(edges);
+    //console.log(users);
+    //console.log(nodesize);
     var Schema = mongoose.Schema;
     var tofile2='';
     var tofile1='';
@@ -29,7 +29,7 @@ exports.start = function(baton,callback){
     //console.log(tofile1);
     //console.log(tofile2);
     var text='{"nodes":['+tofile1+'],\n"links":['+tofile2+']}'
-    fs.writeFile("../d3/data.json", text, function(err) {
+    fs.writeFile("./data.json", text, function(err) {
         if(err) {
             return console.log(err);
         }

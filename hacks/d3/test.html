@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div id="sidebar">
+<div class="title">Nova</div>
+<div class="nav">
+<div class="back"><a href="/">-</a></div>
+<div class="refresh"><a href="analyze">+</a></div>
+</div>
+<div class="pointer">Pointer-Mode: <input class="messageCheckbox" type="checkbox" value="3" name="mailId[]"></div>
+<div class="strongest-nodes">
+<div class="header">Strongest Relations</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/12.png"/></div>
+<div class="name">Pooja Sethi</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/6.png"/></div>
+<div class="name">Matthew Ly</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/15.png"/></div>
+<div class="name">Naomi Musgrave</div>
+</div>
+
+</div>
+<div class="isolated-nodes">
+<div class="header">Isolated Relations</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/28.png"/></div>
+<div class="name">George Geller</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/20.png"/></div>
+<div class="name">Winny Jill</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/7.png"/></div>
+<div class="name">Bark Nelson</div>
+</div>
+
+</div>
+</div>
+
+
+
+</div>
+
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script type="text/javascript" src="javascripts/ShortestPathCalculator.js"></script>
+<script type="text/javascript" src="javascripts/ShortestPathUtils.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+
+
+<style>
+ @font-face { font-family: Delicious; src: url('alienleague.ttf'); } 
+
+.strongest-nodes,.isolated-nodes{
+ float: left;
+ height: 180px;
+ padding: 10px;
+}
+
+.nav{
+    float: right;
+}
+
+.header{
+font-size: 30px;
+}
+
+.node{
+float: left;
+padding: 10px;
+}
+
+.strongest-nodes img,
+.isolated-nodes img{
+width: 100px;
+height: 100px;
+}
+
+
+a{
+text-decoration: none;
+}
+
+a:hover{
+text-decoration: none;
+}
+
+.back, .refresh{
+    float: left;
+    font-size: 60px;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+
+
+
+
+body{
+margin: 0px;
+}
+
+.pointer{
+    font-size: 25px;
+    position: relative;
+    z-index: 20;
+    margin-top: 78px;
+    background-color: orange;
+    padding: 15px;
+}
+
+#sidebar{
+    float: right;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    width: 400px;
+    background-color: #ECECEC;
+    font-family: Delicious;
+}
+
+
+#sidebar .title{
+    float: left;
+    background-color: #ECECEC;
+    font-family: Delicious;
+    font-size: 60px;
+    padding-left: 15px;
+}
+
+.link {
+  stroke: #3E3E3E;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+  color: white;
+  display: none;
+}
+
+</style>
+<body>
+
+<script>
+
+var map = [];
+
+var width = 1200,
+    height = 720
+
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Name:</strong> <span style='color:#FFA500'>" + d.name+ "</span><br><strong>Influence:</strong> <span style='color:#FFA500'>" + Math.min(2.0, Math.max(0.35, Math.round(Math.log(d.value)*100)/100)) + "</span><br>";
+  })
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.call(tip);
+
+var force = d3.layout.force()
+    .gravity(.05)
+    .distance(function(d){return 15*d.distance})
+    .charge(-100)
+    .size([width, height]);
+
+
+d3.json("data.json", function(error, json) {
+  if (error) throw error;
+
+var nodess = JSON.parse(JSON.stringify(json.nodes));
+var pathss = JSON.parse(JSON.stringify(json.links));
+
+//alert(JSON.stringify(pathss));
+
+var sp1 = new ShortestPathCalculator(nodess, pathss);
+
+  force
+      .nodes(json.nodes)
+      .links(json.links)
+      .start();
+
+  var link = svg.selectAll(".link")
+      .data(json.links)
+    .enter().append("line")
+      .attr("class", "link")
+    .attr("id", function(d){return d.lid;})
+    .style("stroke-width", function(d) { return Math.sqrt(d.width)/15; });
+
+  var node = svg.selectAll(".node")
+      .data(json.nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("r", function(d){return d.value/40})
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+      .on("click", 
+function(d){
+    if(document.getElementsByClassName('messageCheckbox')[0].checked){
+   //alert(map);
+    map.push(d.id);
+    //alert(map);
+    
+    if(map.length == 2){
+
+var route = sp1.findRoute(map[0],map[1]);
+
+//alert(JSON.stringify(route));
+
+
+var unassociated_links = svg.selectAll(".link").filter(function(e) {
+            return (true);
+        }).each(function(dLink, iLink) {
+            
+            //unfade links and nodes connected to the current node
+            d3.select(this).style("opacity", 0.2);
+            //THE FOLLOWING CAUSES: Uncaught TypeError: Cannot call method 'setProperty' of undefined
+
+            var unassociated_nodes = svg.selectAll(".node").filter(function(n){
+                return true;
+            }).each(function(eLink, jLink){
+                d3.select(this).style("opacity", 0.2);
+            });
+        });
+
+
+
+var associated_links = svg.selectAll(".link").filter(function(e) {
+            for(var i = 0; i < route.path.length; i++){
+                if ((e.source.index == route.path[i].source && e.target.index == route.path[i].target)||(e.source.index == route.path[i].target && e.target.index == route.path[i].source)){
+                    return true;
+                
+            }
+}
+            return false;
+        }).each(function(dLink, iLink) {
+            //alert('works!');
+            //unfade links and nodes connected to the current node
+            d3.select(this).style("opacity", 1);
+            //THE FOLLOWING CAUSES: Uncaught TypeError: Cannot call method 'setProperty' of undefined
+            var associated_nodes = svg.selectAll(".node").filter(function(n){
+for(var i = 0; i < route.path.length; i++){
+                if ((n.id == route.path[i].source || n.id ==route.path[i].target)){
+                    return true;
+                
+            }
+}
+
+
+                return false;
+            }).each(function(eLink, jLink){
+                d3.select(this).style("opacity", 1);
+            });
+        });
+}
+    }
+})
+      .call(force.drag);
+
+  node.append("image")
+      .attr("xlink:href", function(d){return d.image})
+      .attr("x", -8)
+      .attr("y", -8)
+      .attr("width", function(d){return (d.value)*7 + 10*3})
+      .attr("height", function(d){return (d.value)*7 + 10*3});
+
+  node.append("text")
+      .attr("dx", 12)
+      .attr("dy", "1em")
+      .text(function(d) { return d.name });
+
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  });
+});
+
+function click(value){
+//alert(value);
+}
+
+</script>
+
+
