@@ -1,8 +1,7 @@
 # Network Optimized Visual Analysis (NOVA)
 
-![alt tag](https://github.com/nmusgrave/hack_the_planet/blob/master/img/gallery.jpg)
-![alt tag](https://github.com/nmusgrave/hack_the_planet/blob/master/img/gallery-2.jpg)
-![alt tag](https://github.com/nmusgrave/hack_the_planet/blob/master/img/gallery-3.jpg)
+<img src="https://github.com/nmusgrave/hack_the_planet/blob/master/img/gallery.jpg" width="250"><img src="https://github.com/nmusgrave/hack_the_planet/blob/master/img/gallery-2.jpg" width="250"><img src="https://github.com/nmusgrave/hack_the_planet/blob/master/img/gallery-3.jpg" width="250">
+
 
 ## Inspiration
 Have you ever noticed weak nodes inside your network of co-workers or classmates? Are you missing shared acquaintances who can introduce you to others?  Do you sometimes wonder which connections you need to approach in order to quickly build a stronger relationship with that person? Fear no more! Nova offers you the analysis needed to gain network with anyone in your team. 
