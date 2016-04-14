@@ -5,10 +5,49 @@
 <div id="sidebar">
 <div class="title">Nova</div>
 <div class="nav">
-<div class="back"><a href="front.html">-</a></div>
-<div class="refresh"><a href="test.html">+</a></div>
+<div class="back"><a href="/">-</a></div>
+<div class="refresh"><a href="analyze">+</a></div>
 </div>
-<div class="pointer">Pointer-Mode: <input class="messageCheckbox" type="checkbox" value="3" name="mailId[]"></div>
+<div class="pointer">Shortest-Path Mode: <input class="messageCheckbox" type="checkbox" value="3" name="mailId[]"></div>
+<div class="strongest-nodes">
+<div class="header">Strongest Relations</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/12.png"/></div>
+<div class="name">Pooja Sethi</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/6.png"/></div>
+<div class="name">Matthew Ly</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/15.png"/></div>
+<div class="name">Naomi Musgrave</div>
+</div>
+
+</div>
+<div class="isolated-nodes">
+<div class="header">Isolated Relations</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/28.png"/></div>
+<div class="name">George Geller</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/20.png"/></div>
+<div class="name">Winny Jill</div>
+</div>
+<div class="node">
+<div class="image"><img src="http://schakr.com/pictures/7.png"/></div>
+<div class="name">Bark Nelson</div>
+</div>
+
+</div>
+</div>
+
+
+
+</div>
+
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script type="text/javascript" src="javascripts/ShortestPathCalculator.js"></script>
@@ -20,9 +59,31 @@
 <style>
  @font-face { font-family: Delicious; src: url('alienleague.ttf'); } 
 
+.strongest-nodes,.isolated-nodes{
+ float: left;
+ height: 180px;
+ padding: 10px;
+}
+
 .nav{
     float: right;
 }
+
+.header{
+font-size: 30px;
+}
+
+.node{
+float: left;
+padding: 10px;
+}
+
+.strongest-nodes img,
+.isolated-nodes img{
+width: 100px;
+height: 100px;
+}
+
 
 a{
 text-decoration: none;
